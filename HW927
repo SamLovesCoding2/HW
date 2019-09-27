@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -25,18 +26,26 @@ public class HW927
     public static TreeSet<String> strSet;
     public static int length;
     public static Iterator<String> i;
-    public static HashMap wordCount;
+    public static HashMap<Integer, Integer> wordCount;
     public static List<Integer> numList;
     public static void main(String[] args)
     {
         strSet = new TreeSet<String>();
+        numList = new ArrayList<Integer>();
         strSet.add("1");
         strSet.add("12");
         strSet.add("123");
         strSet.add("1234");
+        numList.add(1);
+        numList.add(1);
+        numList.add(14);
+        numList.add(12);
+        numList.add(13);
+        
         length = getMax(strSet);
         System.out.println(length);
-        
+        int most = appearMost(numList);
+        System.out.println(most);
     }
     public static int getMax(TreeSet<String> strSet)
     {
@@ -88,10 +97,11 @@ public class HW927
         }
         return isOdd;
     }
-    public static int appearMost(List list)
+    public static int appearMost(List<Integer> list)
     {
-        
-        wordCount = new HashMap<String ,Integer>();
+        int num;
+        int firstValue;
+        wordCount = new HashMap<Integer ,Integer>();
         if(list.size() == 0)
         {
             return 0;
@@ -99,9 +109,35 @@ public class HW927
         {
             for(int i = 0;i<list.size();i++)
             {
-                int currentNum = (int) list.get(i);
-                
+                int currentNum = list.get(i);
+                if(!wordCount.containsKey(currentNum))
+                {
+                    wordCount.put(currentNum,1);
+                }else
+                {
+                    wordCount.replace(currentNum, wordCount.get(currentNum)+1);  
+                }  
+            }
+            firstValue = list.get(0);
+            num = wordCount.get(list.get(0));
+            for(int j:wordCount.keySet())
+            {
+                int c = wordCount.get(j);
+                if(c>firstValue)
+                {
+                    firstValue = j;
+                    num = c;
+                }
             }
         }
+        return num;
+    }
+    public static Set<String >remoceEven(Set<String> set)
+    {
+        
+    }
+    public static TreeMap<String, Integer> reverseMap(TreeMap<Integer, String> oldMap)
+    {
+        for()
     }
 }

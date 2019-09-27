@@ -115,7 +115,7 @@ public class HW927
                     wordCount.put(currentNum,1);
                 }else
                 {
-                    wordCount.replace(currentNum, wordCount.get(currentNum)+1);  
+                    wordCount.put(currentNum, wordCount.get(currentNum)+1);  
                 }  
             }
             firstValue = list.get(0);
@@ -134,10 +134,17 @@ public class HW927
     }
     public static Set<String >remoceEven(Set<String> set)
     {
-        
+        Iterator it = set.iterator();
+        String word;
+        while(it.hasNext())
+        {
+            word = it.next().toString();
+            if(word.length()%2 == 0)
+            {
+                it.remove();
+            }
+        }
+        return set;
     }
-    public static TreeMap<String, Integer> reverseMap(TreeMap<Integer, String> oldMap)
-    {
-        for()
-    }
+
 }

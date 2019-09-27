@@ -1,0 +1,61 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package hw927;
+
+import java.util.Iterator;
+import java.util.TreeSet;
+
+/**
+ *
+ * @author lupeiyu
+ */
+public class HW927
+{
+
+    /**
+     * @param args the command line arguments
+     */
+    public static TreeSet<String> strSet;
+    public static int length;
+    public static Iterator<String> i;
+    public static void main(String[] args)
+    {
+        strSet.add("1");
+        strSet.add("12");
+        strSet.add("123");
+        strSet.add("1234");
+        length = getMax(strSet);
+        System.out.println(length);
+        
+    }
+    public static int getMax(TreeSet<String> strSet)
+    {
+        i = strSet.iterator();
+        int l = 0;
+        int max = 0;
+        String currentString = "";
+        String currentString1 = "";
+        if(strSet.size() == 0)
+        {
+        }
+        else
+        {
+            currentString1 = i.next();
+            max = currentString1.length();
+            while(i.hasNext())
+            {
+               currentString = i.next();
+               l = currentString.length();
+               if(l>max)
+               {
+                   max = l;
+                   
+               }
+            }
+        }
+        return max;
+    }
+}

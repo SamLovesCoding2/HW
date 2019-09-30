@@ -8,7 +8,10 @@ package project927;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -25,14 +28,20 @@ public class Project927 {
     public static String secondWord = "";
     public static int difference = 0;
     public static TreeMap<String, Integer> map;
-    public static TreeSet<String> allWord;
+    public static TreeSet<String> selectedWord;
     public static Iterator<String> it;
+    public static TreeMap<String,Integer> distance;
+    public static TreeMap<Integer,TreeSet<String>> distanceWord;
+    public static String str = "";
+    
     public static void main(String[] args) {
-      allWord = new TreeSet<String>();
-      it = allWord.iterator();
+      map = new TreeMap<String ,Integer>();
+      selectedWord = new TreeSet<String>();
+      distance = new TreeMap<>();
+      distanceWord = new TreeMap<>();
+      
       try
       {
-      
       Scanner sc = new Scanner(new File("dictionary words small.txt"));
       Scanner input = new Scanner(System.in);
       firstWord = input.next();
@@ -40,30 +49,75 @@ public class Project927 {
       
       while(sc.hasNext())
       {
-          sc.useDelimiter("//W");
-          String str = sc.next();
-          allWord.add(str);
-      
+          str = sc.next();
+          
+          if(firstWord.length() == secondWord.length())
+             {
+                 map.put(str, str.length());
+             }
+             else
+             {
+                 System.out.println("Two words need to have same distance");
+                 break;
+             }
       }
-      if(it.hasNext())
-      {System.out.println("yes");}else
-      {System.out.println("No");}
-//         while(it.hasNext())
-//         {
-//             String strr = it.next();
-//             System.out.println(strr);
-//             if(firstWord.equalsIgnoreCase(strr) && secondWord.equalsIgnoreCase(strr))
-//             {
-//                 System.out.println("true");
-//             }
-//             else
-//             {
-//                 System.out.println("yeet");
-//             }
-//         }
-      }
+                
+      for(Entry<String, Integer> word:map.entrySet())
+          {
+              
+              if(map.containsKey(firstWord)&&map.containsKey(secondWord))
+              {
+                     String currentKey = word.getKey();
+                     int currentValue = word.getValue();
+                     
+                      if(currentValue == firstWord.length()&&currentValue == secondWord.length())
+                      { 
+                           selectedWord.add(word.getKey());
+                           
+                      }                   
+              }else
+              {
+                  System.out.println("the dictionary does not contain the words, pls make everyword not capitalized");
+                  break;
+              }      
+          }
+
+          it = selectedWord.iterator();
+          while(it.hasNext())
+         {
+            String strr = it.next();
+            int count = 0;
+            
+            for(int i = 0;i<firstWord.length();i++)
+            {
+                if(strr.charAt(i)!=firstWord.charAt(i))
+                {
+                    count++;
+                }
+            }
+            distance.put(strr, count); 
+            //create a TreeMap<Integer, TreeSet<String>> that contains the distance and the words that have the distance
+            for(Map.Entry<String,Integer> entry:distance.entrySet())
+            {
+                distanceWord.put(entry.getValue(),new TreeSet<String>());
+                
+                distanceWord.get(entry.getValue()).add(entry.getKey());
+            }
+             
+         }
+System.out.println(distance);
+          //getDistance(map,selectedWord,distance);
+      }          
       catch(Exception e)
-      {System.out.println(e);}
+      {
+          System.out.println(e);
+      }
     }
+//      public static int getDistance(TreeMap<String, Integer> map, TreeSet<String> set,TreeMap<Integer,String> distance)
+//      {         
+//          
+//          
+//          
+//      }
     
 }

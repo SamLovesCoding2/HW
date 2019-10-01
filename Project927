@@ -28,124 +28,82 @@ public class Project927 {
     public static String firstWord = "";
     public static String secondWord = "";
     public static int difference = 0;
-    public static HashMap<String, Integer> map;
+
     public static HashSet<String> selectedWord;
-    public static Iterator<String> it;
-    public static Iterator<String> itt;
-    public static HashSet<String> distanceOne;
     public static HashSet<String> currentGeneration;
     public static HashSet<String> nextGeneration;
     public static HashSet<String> traversed;
-    public static String str = "";
     
     public static void main(String[] args) throws Exception
     {
-      map = new HashMap<>();
+     
       selectedWord = new HashSet<>();
-      distanceOne = new HashSet<>();
       currentGeneration = new HashSet<>();
       nextGeneration = new HashSet<>();
       traversed = new HashSet<>();
       try
       {
-      Scanner sc = new Scanner(new File("test.txt"));
+      
+      Scanner sc = new Scanner(new File("dictionary words small.txt"));
       Scanner input = new Scanner(System.in);
       firstWord = input.next();
       secondWord = input.next();
-      
+      if(firstWord.length() != secondWord.length())
+      {
+            System.out.println("two words have to have same length");
+            return;
+      } 
       while(sc.hasNext())
       {
-          str = sc.next();
-          //check if length of the two words
-          if(firstWord.length() == secondWord.length())
-             {
-                 map.put(str, str.length());
-             }
-             else
-             {
-                 System.out.println("Two words need to have same distance");
-                 break;
-             }
-         
-      }
-                
-      for(Entry<String, Integer> word:map.entrySet())
+          String str = sc.next();
+          if(str.length() == firstWord.length())
           {
-              //check if the two words are in the dictionary;
-              if(map.containsKey(firstWord)&&map.containsKey(secondWord))
-              {
-                     String currentKey = word.getKey();
-                     int currentValue = word.getValue();             
-                     if(currentValue == firstWord.length()&&currentValue == secondWord.length())
-                     { 
-                            //words with same length
-                            selectedWord.add(word.getKey());                        
-                     }                   
-              }else
-              {
-                  System.out.println("the dictionary does not contain the words, pls make everyword not capitalized");
-                  break;
-              }      
-          }
-          it = selectedWord.iterator();
-          while(it.hasNext())
-         {
-            String strr = it.next();
-            int count = 0;
-            for(int i = 0;i<firstWord.length();i++)
+              selectedWord.add(str);
+          }     
+      }
+if(!selectedWord.contains(firstWord) || !selectedWord.contains(secondWord))
+{
+    System.out.println("the dictionary does not contain");
+    return;
+}
+      currentGeneration.add(firstWord);
+      int distance = 0;
+    while(!currentGeneration.contains(secondWord))
+    {
+        if(currentGeneration.isEmpty())
+        {
+            System.out.println("NOOOO valid path");
+            return;
+        }
+        for(String everyWordInCurrent:currentGeneration)
+        {
+            for(String wordInSource:selectedWord)
             {
-                if(strr.charAt(i)!=firstWord.charAt(i))
+                if(!traversed.contains(wordInSource))
                 {
-                    count++;
+                    int count = 0;
+                    for(int i = 0;i<everyWordInCurrent.length();i++)
+                    {
+                        if(wordInSource.charAt(i)!=everyWordInCurrent.charAt(i))
+                        {
+                            count++;
+                        }
+                    }
+                    if(count == 1)
+                    {
+                        nextGeneration.add(wordInSource);
+                        traversed.add(wordInSource);
+                    }
                 }
             }
-            if(count == 1)
-            {
-                distanceOne.add(strr);
-            }
-         }     
-          currentGeneration.add(firstWord);
-          nextGeneration = distanceOne;
-          System.out.println("current: " + currentGeneration);//corrent
-          System.out.println("next" + nextGeneration);//corrent
-          int distanceNum = 1;
-          if(currentGeneration.contains(secondWord))
-          {
-              System.out.println("the distance: 1");
-          }else
-          {
-            while(!currentGeneration.contains(secondWord))
-            { System.out.println("no");
-                traversed.addAll(currentGeneration);
-                currentGeneration.clear();
-                currentGeneration = nextGeneration;
-                nextGeneration.clear();
-                itt = currentGeneration.iterator();
-                while(itt.hasNext())
-                   {
-                       String wordInCurrent = itt.next();
-                   while(it.hasNext())
-                       {
-                           String wordInSet = it.next();
-                           int count = 0;
-                               for(int i = 0;i<wordInSet.length();i++)
-                                   {
-                                       if(wordInCurrent.charAt(i)!=wordInSet.charAt(i))
-                                           {
-                                               count++;
-                                           }
-                                   }
-                               if(count == 1)
-                               {
-                                   nextGeneration.add(wordInSet);
-                               }
-                       }
-                   }
-                    distanceNum++;
-            }   
-         System.out.println(distanceNum);
-        }   
-      }
+        }
+        currentGeneration.clear();
+        currentGeneration.addAll(nextGeneration);
+        nextGeneration.clear();
+        distance++;
+    }
+          System.out.println(distance);
+   }
       catch(Exception e)
       {
           System.out.println(e);
